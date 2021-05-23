@@ -41,7 +41,7 @@ export const PermissionsProvider = ({
     };
   }, []);
 
-  const handleAppStateChange = (state: any) => {
+  const handleAppStateChange = (state: AppStateStatus) => {
     if (state !== 'active') {
       return;
     }
