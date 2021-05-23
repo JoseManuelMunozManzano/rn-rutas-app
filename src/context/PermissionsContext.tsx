@@ -32,22 +32,31 @@ export const PermissionsProvider = ({
 }) => {
   const [permissions, setPermissions] = useState(permissionInitState);
 
-  // Para saber en cualquier momento el estado de los permisos
-  useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange);
-
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-    };
-  }, []);
-
   const handleAppStateChange = (state: AppStateStatus) => {
+    console.log(Platform.OS + ' entra handler con state ' + state);
     if (state !== 'active') {
       return;
     }
 
     checkLocationPermission();
   };
+
+  // Para saber en cualquier momento el estado de los permisos
+  useEffect(() => {
+    console.log(Platform.OS + ' entra useEffect');
+
+    // Si no se llama al handler directamente se queda indefinidamente en LoadingScreen
+    // cuando en IOS se pulsa reload en metro o se pulsa botón Atrás en Android y se vuelve
+    // a ejecutar la App
+    handleAppStateChange(AppState.currentState);
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      console.log('remove ' + AppState.currentState);
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
+  }, []);
 
   const askLocationPermission = async () => {
     let permissionStatus: PermissionStatus;

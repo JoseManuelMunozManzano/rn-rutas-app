@@ -6,6 +6,7 @@ import {MapScreen} from '../pages/MapScreen';
 import {PermissionsScreen} from '../pages/PermissionsScreen';
 import {PermissionsContext} from '../context/PermissionsContext';
 import {LoadingScreen} from '../pages/LoadingScreen';
+import {Platform} from 'react-native';
 
 export type RootStackParams = {
   MapScreen: undefined;
@@ -20,6 +21,10 @@ export const Navigator = () => {
   if (permissions.locationStatus === 'unavailable') {
     return <LoadingScreen />;
   }
+
+  console.log(
+    Platform.OS + ' en Navigator.tsx con estado ' + permissions.locationStatus,
+  );
 
   return (
     <Stack.Navigator
