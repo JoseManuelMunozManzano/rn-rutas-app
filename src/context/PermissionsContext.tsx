@@ -3,6 +3,7 @@ import {createContext, useState} from 'react';
 import {AppState, AppStateStatus, Platform} from 'react-native';
 import {
   check,
+  openSettings,
   PERMISSIONS,
   PermissionStatus,
   request,
@@ -57,6 +58,11 @@ export const PermissionsProvider = ({
       permissionStatus = await request(
         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
       );
+    }
+
+    // Abrir Settings (ajustes de la app)
+    if (permissionStatus === 'blocked') {
+      openSettings();
     }
 
     setPermissions({...permissions, locationStatus: permissionStatus});
