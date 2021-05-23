@@ -1,12 +1,48 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, Platform, StyleSheet, Text, View} from 'react-native';
+import {
+  check,
+  PERMISSIONS,
+  PermissionStatus,
+  request,
+} from 'react-native-permissions';
 
 export const PermissionsScreen = () => {
+  const checkLocationPermission = async () => {
+    let permissionStatus: PermissionStatus;
+
+    if (Platform.OS === 'ios') {
+      // Para saber si ahora mismo tenemos permisos
+      // permissionStatus = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+
+      // Para pedir permisos
+      permissionStatus = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    } else {
+      // Para saber si ahora mismo tenemos permisos
+      // permissionStatus = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+
+      // Para pedir permisos
+      permissionStatus = await request(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      );
+    }
+
+    console.log({permissionStatus});
+  };
+
   return (
-    <View>
+    <View style={styles.container}>
       <Text>PermissionsScreen</Text>
+
+      <Button title="Permiso" onPress={checkLocationPermission} />
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
