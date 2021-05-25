@@ -22,10 +22,6 @@ export const Navigator = () => {
     return <LoadingScreen />;
   }
 
-  console.log(
-    Platform.OS + ' en Navigator.tsx con estado ' + permissions.locationStatus,
-  );
-
   return (
     <Stack.Navigator
       // initialRouteName="PermissionsScreen"
