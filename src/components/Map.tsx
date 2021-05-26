@@ -1,11 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import MapView, {Marker} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 
 interface Props {
   markers?: Marker[];
 }
 
 export const Map = ({markers}: Props) => {
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      info => console.log(info),
+      err => console.log({err}),
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000,
+      },
+    );
+  }, []);
+
   return (
     <>
       <MapView
