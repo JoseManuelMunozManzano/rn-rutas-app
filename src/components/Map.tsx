@@ -13,6 +13,7 @@ export const Map = ({markers}: Props) => {
         // con esta línea y la configuración se puede hacer que se use en IOS GoogleMaps
         // Sin esta línea, en Android se usará GoogleMaps y en IOS se usará AppleMaps
         // provider={PROVIDER_GOOGLE}
+        showsUserLocation
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
