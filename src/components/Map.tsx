@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 
 import {useLocation} from '../hooks/useLocation';
@@ -10,7 +10,17 @@ interface Props {
 }
 
 export const Map = ({markers}: Props) => {
-  const {hasLocation, initialPosition} = useLocation();
+  const {hasLocation, initialPosition, getCurrentLocation} = useLocation();
+
+  const mapViewRef = useRef<MapView>();
+
+  const centerPosition = async () => {
+    const location = await getCurrentLocation();
+
+    mapViewRef.current?.animateCamera({
+      center: location,
+    });
+  };
 
   if (!hasLocation) {
     return <LoadingScreen />;
@@ -19,6 +29,7 @@ export const Map = ({markers}: Props) => {
   return (
     <>
       <MapView
+        ref={el => (mapViewRef.current = el!)}
         style={{flex: 1}}
         // con esta línea y la configuración se puede hacer que se use en IOS GoogleMaps
         // Sin esta línea, en Android se usará GoogleMaps y en IOS se usará AppleMaps
@@ -42,8 +53,8 @@ export const Map = ({markers}: Props) => {
       </MapView>
 
       <Fab
-        iconName="star-outline"
-        onPress={() => console.log('Hola FAB')}
+        iconName="compass-outline"
+        onPress={centerPosition}
         style={{position: 'absolute', bottom: 20, right: 20}}
       />
     </>
